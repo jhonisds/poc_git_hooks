@@ -1,3 +1,4 @@
+# credo:disable-for-next-line CredoNaming.Check.Warning.AvoidSpecificTermsInModuleNames
 defmodule PocGitHooksWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.

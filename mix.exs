@@ -10,7 +10,16 @@ defmodule PocGitHooks.MixProject do
       compilers: [:gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        quality: :test,
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test,
+        "test.watch": :test
+      ]
     ]
   end
 
@@ -51,7 +60,15 @@ defmodule PocGitHooks.MixProject do
       {:plug_cowboy, "~> 2.5"},
 
       # git hooks
-      {:git_hooks, "~> 0.6.4", only: [:dev], runtime: false}
+      {:git_hooks, "~> 0.6.4", only: [:dev], runtime: false},
+
+      # Lint
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:credo_naming, "~> 1.0", only: [:dev, :test], runtime: false},
+
+      # Test
+      {:excoveralls, "~> 0.14", only: :test, runtime: false},
+      {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -67,7 +84,13 @@ defmodule PocGitHooks.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.deploy": ["esbuild default --minify", "phx.digest"],
+      quality: [
+        "format --check-formatted",
+        "credo",
+        "compile --warnings-as-errors",
+        "coveralls.html --color"
+      ]
     ]
   end
 end

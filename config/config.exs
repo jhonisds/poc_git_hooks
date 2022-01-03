@@ -56,14 +56,15 @@ if Mix.env() == :dev do
     verbose: true,
     branches: [
       whitelist: ["feature-.*"],
-      blacklist: ["main"]
+      blacklist: ["master"]
     ],
     hooks: [
       pre_commit: [
-        verbose: false,
+        verbose: true,
         tasks: [
+          # {:cmd, "mix quality"},
           {:cmd, "mix format --check-formatted"},
-          {:cmd, "mix test --color"}
+          {:cmd, "mix credo --strict"}
         ]
       ],
       pre_push: [
