@@ -60,15 +60,16 @@ if Mix.env() == :dev do
     ],
     hooks: [
       pre_commit: [
-        verbose: true,
         tasks: [
           # {:cmd, "mix quality"},
-          {:cmd, "mix format --check-formatted"},
-          {:cmd, "mix credo --strict"}
+          {:cmd, "mix format"},
+          {:cmd, "mix credo"},
+          {:cmd, "mix compile --warnings-as-errors"},
+          {:cmd, "mix coveralls.html --color"}
         ]
       ],
       pre_push: [
-        verbose: false,
+        verbose: true,
         tasks: [
           {:cmd, "mix test --color"},
           {:cmd, "echo 'success!'"}
